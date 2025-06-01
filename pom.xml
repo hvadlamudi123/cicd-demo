@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<groupId>3a841ab9-741f-4619-97f5-43aec9ad5df3</groupId>
 	<artifactId>cicd-demo</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
@@ -29,6 +29,40 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<cloudhub2Deployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<provider>MC</provider>
+						<environment>${environment}</environment>
+						<target>${targetName}</target>
+						<!--  <muleVersion>${app.runtime}</muleVersion>  -->
+						<server>anypoint-exchange-v3</server>
+						<connectedAppClientId>${clientID}</connectedAppClientId>
+      					<connectedAppClientSecret>${clientSecret}</connectedAppClientSecret>
+						<applicationName>${project.name}</applicationName>
+						<replicas>1</replicas>
+						<vCores>0.1</vCores>
+						<businessGroupId>${businessGroupID}</businessGroupId>
+						<!--   <businessGroup>VistraCorp\Corporate</businessGroup>		 -->
+						<deploymentSettings>
+							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+							<http>
+								<inbound>
+									<!-- <publicUrl>${publicURL}</publicUrl> -->
+									<forwardSslSession>false</forwardSslSession>
+									<lastMileSecurity>false</lastMileSecurity>
+								</inbound>
+							</http>
+						</deploymentSettings>
+						<properties>
+							<remote.api.clientId>8081</remote.api.clientId>
+						</properties>
+						<secureProperties>
+							<remote.api.clientSecret>8081</remote.api.clientSecret>
+						</secureProperties>
+					</cloudhub2Deployment>
+					<classifier>mule-application</classifier>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -74,5 +108,14 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	<!-- Added for Exchange deployment -->
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Corporate Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 </project>
